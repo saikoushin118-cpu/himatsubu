@@ -1,0 +1,32 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ヒマツブ｜待ち時間を、遊ぶ時間に。</title><style>
+:root{--bg:#fffaf3;--card:#fff;--ink:#302b28;--muted:#746d67;--accent:#f0b54d;--soft:#f7e4bd;--line:#eee5da}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
+.wrap{max-width:520px;margin:auto;min-height:100vh;padding:24px 18px 48px}.brand{text-align:center;font-weight:900;font-size:34px;letter-spacing:.05em}.tag{text-align:center;color:var(--muted);margin:5px 0 30px}
+h1,h2,p{margin-top:0}.question{text-align:center;font-size:25px;font-weight:800;margin:20px 0 16px}
+.timegrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.timebtn,.primary,.choice{border:0;border-radius:18px;background:#fff;box-shadow:0 5px 18px #0000000c;padding:19px;font-weight:800;font-size:18px;color:var(--ink);cursor:pointer;text-decoration:none;text-align:center}
+.timebtn strong{display:block;font-size:28px}.timebtn.active{background:var(--soft)}
+.card{background:var(--card);border-radius:22px;padding:20px;margin-top:22px;box-shadow:0 5px 20px #0000000b}.eyebrow{font-size:13px;font-weight:800;color:#a46c18}.primary{display:block;width:100%;background:var(--accent);margin-top:14px}.small{font-size:13px;color:var(--muted)}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.back{text-decoration:none;color:var(--ink);font-weight:700}.pill{background:var(--soft);padding:7px 11px;border-radius:999px;font-weight:800;font-size:13px}
+.center{text-align:center}.big{font-size:46px;font-weight:900;margin:24px 0}.choices{display:grid;gap:10px}.choice{border:2px solid transparent}.choice.correct{border-color:#70b77e;background:#eff9f1}.choice.wrong{border-color:#df7c74;background:#fff0ef}
+.progress{height:8px;background:#eee;border-radius:99px;overflow:hidden}.bar{height:100%;background:var(--accent);width:0}
+.reaction-zone{height:330px;border-radius:26px;background:#e9e4dc;display:flex;align-items:center;justify-content:center;text-align:center;padding:25px;user-select:none;cursor:pointer;transition:.15s}.reaction-zone.ready{background:#cce7c8}.reaction-zone.tooearly{background:#f4d0cd}.reaction-zone strong{font-size:30px}
+.resultnum{font-size:58px;font-weight:900;margin:15px 0 5px}.hidden{display:none!important}
+</style></head><body><main class="wrap">
+<div class="brand">ヒマツブ</div><div class="tag">待ち時間を、遊ぶ時間に。</div>
+<div class="question">あと何分ヒマ？</div><p class="small center" style="margin-top:-8px;margin-bottom:16px">時間を選ぶと、すぐ遊べるゲームをおまかせでスタート。</p>
+<div class="timegrid">
+<a class="timebtn active" href="reaction.html?auto=1"><strong>1分</strong>ヒマ</a>
+<a class="timebtn" href="#" id="threeMin"><strong>3分</strong>ヒマ</a>
+<a class="timebtn" href="prefecture.html?auto=1"><strong>5分</strong>ヒマ</a>
+<a class="timebtn" href="brainmix.html?auto=1"><strong>10分</strong>ヒマ</a>
+</div>
+<section class="card"><div class="eyebrow">今日の1分ヒマ</div><h2>⚡ 反射神経テスト</h2><p>画面が変わった瞬間にタップ。あなたの反応速度は何ms？</p><a class="primary" href="reaction.html">今すぐ遊ぶ</a></section>
+<section class="card"><div class="eyebrow">3分ヒマ</div><h2>🈶 漢字力チャレンジ</h2><p>難読漢字10問。スキマ時間にサクッと挑戦。</p><a class="primary" href="kanji.html">遊ぶ</a></section><section class="card"><div class="eyebrow">3分ヒマ・NEW</div><h2>🧠 瞬間記憶チャレンジ</h2><p>数字を数秒だけ記憶。どこまで覚えられる？</p><a class="primary" href="memory.html">今すぐ遊ぶ</a></section>
+<section class="card"><div class="eyebrow">5分ヒマ・NEW</div><h2>🗾 都道府県クイズ</h2><p>名物・観光地・県庁所在地から都道府県を当てよう。全10問。</p><a class="primary" href="prefecture.html">今すぐ遊ぶ</a></section><section class="card"><div class="eyebrow">10分ヒマ・NEW</div><h2>🔥 10分総合チャレンジ</h2><p>漢字・計算・記憶・ひらめき。4ジャンルを連続で遊ぶ全12問。</p><a class="primary" href="brainmix.html">今すぐ遊ぶ</a></section><p class="small center" style="margin-top:25px">登録不要・無料・スマホですぐ遊べます</p>
+</main><script>
+document.getElementById('threeMin').addEventListener('click', function(e){
+  e.preventDefault();
+  const games=['kanji.html?auto=1','memory.html?auto=1'];
+  location.href=games[Math.floor(Math.random()*games.length)];
+});
+</script></body></html>

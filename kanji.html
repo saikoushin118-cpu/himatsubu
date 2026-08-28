@@ -1,0 +1,41 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>漢字読み方クイズ｜ヒマツブ</title><style>
+:root{--bg:#fffaf3;--card:#fff;--ink:#302b28;--muted:#746d67;--accent:#f0b54d;--soft:#f7e4bd;--line:#eee5da}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
+.wrap{max-width:520px;margin:auto;min-height:100vh;padding:24px 18px 48px}.brand{text-align:center;font-weight:900;font-size:34px;letter-spacing:.05em}.tag{text-align:center;color:var(--muted);margin:5px 0 30px}
+h1,h2,p{margin-top:0}.question{text-align:center;font-size:25px;font-weight:800;margin:20px 0 16px}
+.timegrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.timebtn,.primary,.choice{border:0;border-radius:18px;background:#fff;box-shadow:0 5px 18px #0000000c;padding:19px;font-weight:800;font-size:18px;color:var(--ink);cursor:pointer;text-decoration:none;text-align:center}
+.timebtn strong{display:block;font-size:28px}.timebtn.active{background:var(--soft)}
+.card{background:var(--card);border-radius:22px;padding:20px;margin-top:22px;box-shadow:0 5px 20px #0000000b}.eyebrow{font-size:13px;font-weight:800;color:#a46c18}.primary{display:block;width:100%;background:var(--accent);margin-top:14px}.small{font-size:13px;color:var(--muted)}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.back{text-decoration:none;color:var(--ink);font-weight:700}.pill{background:var(--soft);padding:7px 11px;border-radius:999px;font-weight:800;font-size:13px}
+.center{text-align:center}.big{font-size:46px;font-weight:900;margin:24px 0}.choices{display:grid;gap:10px}.choice{border:2px solid transparent}.choice.correct{border-color:#70b77e;background:#eff9f1}.choice.wrong{border-color:#df7c74;background:#fff0ef}
+.progress{height:8px;background:#eee;border-radius:99px;overflow:hidden}.bar{height:100%;background:var(--accent);width:0}
+.reaction-zone{height:330px;border-radius:26px;background:#e9e4dc;display:flex;align-items:center;justify-content:center;text-align:center;padding:25px;user-select:none;cursor:pointer;transition:.15s}.reaction-zone.ready{background:#cce7c8}.reaction-zone.tooearly{background:#f4d0cd}.reaction-zone strong{font-size:30px}
+.resultnum{font-size:58px;font-weight:900;margin:15px 0 5px}.hidden{display:none!important}
+</style></head><body><main class="wrap">
+<div class="top"><a class="back" href="index.html">← ヒマツブ</a><span class="pill" id="timePill">3分ヒマ</span></div>
+<div id="intro" class="center"><div class="eyebrow">3分でできる</div><h1>🈶 漢字力チャレンジ</h1><p>難読漢字10問。あなたは何問読める？</p><button class="primary" onclick="startGame()">スタート</button></div>
+<div id="game" class="hidden"><div class="progress"><div id="bar" class="bar"></div></div><p class="small center"><span id="qn"></span> / 10</p><div class="card center"><div id="word" class="big"></div><p>なんと読む？</p></div><div id="choices" class="choices"></div><div id="explain" class="card hidden"></div><button id="next" class="primary hidden" onclick="nextQ()">次へ →</button></div>
+<div id="result" class="center hidden"><div class="eyebrow">RESULT</div><h1>漢字力チャレンジ</h1><div class="resultnum"><span id="score"></span><small style="font-size:20px"> / 10</small></div><p id="rank"></p><button class="primary" id="another3">もう3分ヒマ？ → 別のゲーム</button><button class="primary" style="background:#fff" onclick="startGame()">同じゲームをもう一度</button><a class="primary" style="background:#fff" href="index.html">ホームへ</a></div>
+</main><script>
+const data=[
+['躊躇','ちゅうちょ',['ちゅうしょ','ちょうちょ','じゅうちょ'],'決心がつかず、ためらうこと。'],
+['相殺','そうさい',['あいさつ','そうさつ','あいさい'],'互いの差し引きで帳消しにすること。'],
+['凡例','はんれい',['ぼんれい','はんれつ','ぼんれつ'],'図表などで記号の意味を説明したもの。'],
+['進捗','しんちょく',['しんぽ','しんしょう','しんたく'],'物事が進み、はかどること。'],
+['踏襲','とうしゅう',['ふしゅう','とうしょう','ふとう'],'前のやり方をそのまま受け継ぐこと。'],
+['汎用','はんよう',['ぼんよう','はんゆう','ひろよう'],'広くいろいろな用途に使えること。'],
+['脆弱','ぜいじゃく',['きじゃく','せいじゃく','ぜいよわ'],'もろくて弱いこと。'],
+['訃報','ふほう',['けいほう','とほう','ぶほう'],'人が亡くなった知らせ。'],
+['払拭','ふっしょく',['はらしょく','ふっしき','ふつしょく'],'すっかり取り除くこと。'],
+['暫時','ざんじ',['ぜんじ','ざんとき','しばじ'],'しばらくの間。']
+]; let qs=[],i=0,s=0,locked=false;
+function startGame(){intro.classList.add('hidden');result.classList.add('hidden');game.classList.remove('hidden');qs=[...data].sort(()=>Math.random()-.5);i=0;s=0;show()}
+function show(){locked=false;next.classList.add('hidden');explain.classList.add('hidden');let q=qs[i];qn.textContent=i+1;bar.style.width=(i/10*100)+'%';word.textContent=q[0];choices.innerHTML='';[q[1],...q[2]].sort(()=>Math.random()-.5).forEach(c=>{let b=document.createElement('button');b.className='choice';b.textContent=c;b.onclick=()=>answer(b,c,q);choices.appendChild(b)})}
+function answer(b,c,q){if(locked)return;locked=true;[...choices.children].forEach(x=>{if(x.textContent===q[1])x.classList.add('correct')});if(c===q[1])s++;else b.classList.add('wrong');explain.innerHTML='<strong>'+q[0]+'（'+q[1]+'）</strong><br>'+q[3];explain.classList.remove('hidden');next.classList.remove('hidden')}
+function nextQ(){i++;if(i<10)show();else{game.classList.add('hidden');result.classList.remove('hidden');score.textContent=s;rank.textContent=s>=9?'🏆 漢字マスター！':s>=7?'👏 かなりの漢字力！':s>=5?'👍 いい感じ！':'🔥 もう一度挑戦！'}}
+const params=new URLSearchParams(location.search);
+const mins=params.get('minutes');
+if(mins) document.getElementById('timePill').textContent=mins+'分ヒマ';
+document.getElementById('another3').addEventListener('click',()=>{ location.href='memory.html?auto=1'; });
+if(params.get('auto')==='1') startGame();
+</script></body></html>
